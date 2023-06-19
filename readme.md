@@ -16,7 +16,7 @@ This repository contains a fully-featured ecommerce website built with Django, P
 - **Shopping Cart**: Allows users to add products to their shopping cart and view/edit the cart contents.
   ![Shopping Cart](https://dummyurl.com/cart.png)
 
-- **Checkout**: Enables users to complete their purchases securely using the Razorpay payment gateway integration.
+- **Checkout**: Enables users to complete their purchases securely using the Instamojo payment gateway integration.
   ![Checkout](https://dummyurl.com/checkout.png)
 
 - **Order Tracking**: Provides functionality for customers to track their orders and view their order history.
@@ -37,7 +37,7 @@ The following technologies are used in this project:
 - HTML
 - CSS
 - Tailwind CSS
-- Razorpay Payment Gateway Integration
+- Instamojo Payment Gateway Integration
 
 ## Installation
 
@@ -80,11 +80,11 @@ To install and run the project locally, follow these steps:
 
 Configuration
 
-- To configure the Razorpay payment gateway integration, update the following settings in the settings.py file:
-    RAZORPAY_KEY_ID = 'your-razorpay-key-id'
-    RAZORPAY_KEY_SECRET = 'your-razorpay-key-secret'
+- To configure the Instamojo payment gateway integration, update the following settings in the settings.py file:
+    API_KEY = 'your-instamojo-api-key'
+    AUTH_TOKEN = 'your-instamojo-auth-token'
 
-- Replace 'your-razorpay-key-id' and 'your-razorpay-key-secret' with your actual Razorpay API credentials.
+- Replace 'your-instamojo-api-key' and 'your-instamojo-auth-token' with your actual Instamojo API credentials.
 
 
 Contributing
