@@ -7,7 +7,7 @@ SECRET_KEY = 'django-insecure-fi4+ivu^xo3$yc%+vaxjg@ehn#-=evae-$fix)k2*9_pv-b&j^
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['localhost','127.0.0.1','.vercel.app','now.sh']
 
 INSTALLED_APPS = [
     'tailwind',
@@ -92,9 +92,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Additional Configurations
 
 TAILWIND_APP_NAME = 'app'
-INTERNAL_IPS = ["127.0.0.1",]
+INTERNAL_IPS = ["127.0.0.1"]
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles_build','static')
 STATIC_DIR = BASE_DIR / 'static'
 STATICFILES_DIRS = [STATIC_DIR]
 
@@ -109,6 +110,6 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-BASE_URL = "http://127.0.0.1:8000" # Base url
+BASE_URL = "http://localhost:8000" # Base url
 API_KEY = "test_00fdfd80a82bdae553372ec546b"  # Write your own instamojo API KEY
 AUTH_TOKEN = "test_26343b0f40ae03f99bba48b3a58" # Write your own instamojo AUTH TOKEN
