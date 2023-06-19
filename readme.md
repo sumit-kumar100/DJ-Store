@@ -5,28 +5,34 @@ This repository contains a fully-featured ecommerce website built with Django, P
 ## Features
 
 - **Home Page**: A visually appealing landing page that showcases featured products, promotions, and categories.
-  ![Home Page](https://dummyurl.com/home.png)
+<img src="static/images/img-1.png" width="800" height="450">
+
 
 - **Product Listing Page**: Displays a list of products with various filtering options, such as category, price range, color, etc.
-  ![Product Listing](https://dummyurl.com/listing.png)
+<img src="static/images/img-2.png" width="800" height="450">
 
 - **Product Details Page**: Provides detailed information about a specific product, including multiple color and size options.
-  ![Product Details](https://dummyurl.com/details.png)
+<img src="static/images/img-3.png" width="800" height="450">
+<img src="static/images/img-4.png" width="800" height="450">
 
 - **Shopping Cart**: Allows users to add products to their shopping cart and view/edit the cart contents.
-  ![Shopping Cart](https://dummyurl.com/cart.png)
+<img src="static/images/img-5.png" width="800" height="450">
 
 - **Checkout**: Enables users to complete their purchases securely using the Instamojo payment gateway integration.
-  ![Checkout](https://dummyurl.com/checkout.png)
+<img src="static/images/img-6.png" width="800" height="450">
+<img src="static/images/img-7.5.png" width="800" height="450">
 
 - **Order Tracking**: Provides functionality for customers to track their orders and view their order history.
-  ![Order Tracking](https://dummyurl.com/orders.png)
+<img src="static/images/img-9.png" width="800" height="450">
 
 - **User Authentication**: Allows users to create accounts, log in, and manage their personal information.
-  ![User Authentication](https://dummyurl.com/auth.png)
+<img src="static/images/img-0.0.png" width="800" height="450">
+<img src="static/images/img-0.1.png" width="800" height="450">
+<img src="static/images/img-10.png" width="800" height="450">
+<img src="static/images/img-11.png" width="800" height="450">
 
 - **Admin Dashboard**: Offers an intuitive administration interface for managing products, orders, customers, and other site settings.
-  ![Admin Dashboard](https://dummyurl.com/admin.png)
+<img src="static/images/img-12.png" width="800" height="450">
 
 ## Technologies Used
 
