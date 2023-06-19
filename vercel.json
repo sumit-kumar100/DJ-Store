@@ -20,11 +20,11 @@
     "routes": [
         {
             "src": "/static/(.*)",
-            "des": "/static/$1"
+            "dest": "/static/$1"
         },
         {
             "src": "/(.*)",
-            "des": "djStore/wsgi.py"
+            "dest": "djStore/wsgi.py"
         }
     ]
 }
