@@ -1,0 +1,22 @@
+{% block color %}
+<input type="hidden" name="size" id="size" value="{{ size_id }}" />
+<span class="font-mono text-xs text-gray-600 dark:text-zinc-300">Color :</span>
+<div class="detail">
+  {% for variant_color in colors %}
+  <button
+    class="border rounded {% if variant.color_id == variant_color.color_id %} border-indigo-800 {% endif %}"
+    onchange="this.form.submit();"
+    name="variantid"
+    id="variantid"
+    value="{{ variant_color.id }}"
+  >
+    <a>
+      <img
+        src="{{ variant_color.productvariantmedia_set.all.first.image.url }}"
+        class="{% if variant.color_id == variant_color.color_id %} dark:bg-slate-700 {% endif %}"
+      />
+    </a>
+  </button>
+  {% endfor %}
+</div>
+{% endblock %}

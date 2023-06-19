@@ -1,0 +1,305 @@
+{% load customfilters %} {% block nav %}
+
+<div>
+  <section class="relative mx-auto">
+    <nav class="flex justify-between bg-gray-800 text-white w-screen">
+      <div class="px-5 xl:px-12 py-6 flex w-full items-center">
+        <a class="text-3xl font-bold font-heading" href="/"> dj-Store </a>
+        <div
+          class="hidden md:flex px-4 mx-auto font-semibold font-heading space-x-12"
+        >
+          {% if messages %} 
+            {% for message in messages %} 
+              {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                <div class="flex justify-center">
+                  <div
+                    class="px-14 py-4 text-purple-800 bg-purple-300 rounded-lg shadow-lg shadow-purple-500/50"
+                    role="alert"
+                  >
+                    {{ message }}
+                  </div>
+                </div>
+              {% endif %} 
+            {% endfor %}
+          {% endif %}
+        </div>
+        <div class="hidden md:block md:flex items-center space-x-5 items-center">
+          <a class="hover:text-gray-200" href="#" onclick="showDropDown(event)">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+              />
+            </svg>
+            <div  
+              {% if messages %} {% for message in messages %}{% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %} style="top:99px;" {% endif %}{% endfor %}{% else %} style="top: 78px;" {% endif %} 
+              id="dropDown"
+              class="absolute bg-white dark:bg-gray-900 hidden right-10 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+              role="menu" 
+              aria-orientation="vertical"
+              aria-labelledby="menu-button"
+              tabindex="-1"
+            >
+            <div class="py-1" role="none">
+              {% if request.user.is_authenticated %}
+              <a
+                href="{% url 'myorders' %}"
+                class="text-gray-700 dark:text-zinc-200 block px-4 py-2 text-sm"
+                role="menuitem"
+                tabindex="-1"
+                id="menu-item-1"
+                >My Orders</a
+              >
+              <a
+                href="{% url 'logout' %}"
+                class="text-gray-700 dark:text-zinc-200 block px-4 py-2 text-sm"
+                role="menuitem"
+                tabindex="-1"
+                id="menu-item-2"
+                >Logout</a
+              >
+              {% else %}
+              <a
+                href="{% url 'login' %}"
+                class="text-gray-700 dark:text-zinc-200 block px-4 py-2 text-sm"
+                role="menuitem"
+                tabindex="-1"
+                id="menu-item-3"
+                >Login</a
+              >
+              <a
+                href="{% url 'signup' %}"
+                class="text-gray-700 dark:text-zinc-200 block px-4 py-2 text-sm"
+                role="menuitem"
+                tabindex="-1"
+                id="menu-item-4"
+                >Sign Up</a
+              >
+              {% endif %}
+            </div>
+          </a>
+        </div>
+        <a onclick="switchTheme()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="19"
+            height="19"
+            fill="currentColor"
+            class="bi bi-moon-stars-fill text-xl text-white cursor-pointer mx-2"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"
+            />
+            <path
+              d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"
+            />
+          </svg>
+        </a>
+        <a
+          class="flex items-center hover:text-gray-200 cursor-pointer"
+          onclick="showCart(event)"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+            />
+          </svg>
+          <span class="flex absolute -mt-5 ml-4">
+            <span
+              class="animate-ping absolute inline-flex h-3 w-3 rounded-full bg-pink-400 opacity-75"
+            ></span>
+            <span class="relative inline-flex rounded-full h-3 w-3 bg-pink-500">
+            </span>
+          </span>
+        </a>
+        <a
+          class="flex items-center hover:text-gray-200"
+          href="{% url 'profile' %}"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6 hover:text-gray-200"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        </a>
+      </div>
+      <!-- Responsive navbar -->
+      <a
+        class="md:hidden flex mr-6 items-center cursor-pointer ml-auto"
+        onclick="switchTheme()"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="19"
+          height="19"
+          fill="currentColor"
+          class="bi bi-moon-stars-fill text-xl text-white cursor-pointer mx-2"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"
+          />
+          <path
+            d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"
+          />
+        </svg>
+      </a>
+      <a
+        class="md:hidden flex mr-6 items-center cursor-pointer"
+        onclick="showCart(event)"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6 hover:text-gray-200"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+          />
+        </svg>
+        <span class="flex absolute -mt-5 ml-4">
+          <span
+            class="animate-ping absolute inline-flex h-3 w-3 rounded-full bg-pink-400 opacity-75"
+          ></span>
+          <span class="relative inline-flex rounded-full h-3 w-3 bg-pink-500">
+          </span>
+        </span>
+      </a>
+      <a
+        class="md:hidden flex items-center hover:text-gray-200 mr-6"
+        href="{% url 'profile' %}"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6 hover:text-gray-200"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+      </a>
+      <a
+        class="navbar-burger self-center cursor-pointer md:hidden"
+        onclick="showSideNav(event)"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6 hover:text-gray-200"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"
+          />
+        </svg>
+      </a>
+    </nav>
+  </section>
+</div>
+
+<!-- Categories and Subcategories Navbar -->
+<div
+  class="menu-bar md:px-28 bg-gray-100 dark:bg-gray-700 {% if categories == None %} hidden {% endif %}"
+  style="height: 84px"
+>
+  <ul class="flex overflow-scroll">
+    {% for category in categories %}
+    <li class="group">
+      <div
+        onclick="showMegaMenu('{{ forloop.counter }}')"
+        class="w-32 md:w-36 flex flex-col justify-center md:hover:bg-gray-200 text-gray-600 dark:text-zinc-200 dark:md:hover:text-gray-900 items-center cursor-pointer"
+        style="height:84px;"
+      >
+      <div style="margin-bottom:6px;">
+        <img
+          src="{{ category.thumbnail.url }}"
+          alt=""
+          style="display: block; height: 60px; width: 60px; margin: auto"
+        />
+        <small class="font-mono text-xs "
+          >{{ category.title }}</small
+        >
+        </div>
+      </div>
+      {% if category.subcategories_set.all %}
+      <div class="absolute left-0 z-50 w-full mega-menu" id="mega-menu-{{ forloop.counter }}" style="visibility:hidden;">
+        <div
+          class="category-content px-8 md:px-10 py-5 bg-gray-900 w-10/12 mx-auto rounded-b-md"
+        >
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {% for subcategory in category.subcategories_set.all %}
+            <div class="col-span-1 text-center">
+              <a
+                href=""
+                class="text-base text-white font-semibold whitespace-nowrap"
+              >
+                {{ subcategory.title }}
+              </a>
+              <small class="block" style="font-size: 5px">&nbsp;</small>
+              {% if subcategory.subcategoriesvariant_set.all %} 
+                {% for subcategoryvariant in subcategory.subcategoriesvariant_set.all %}
+                <ul>
+                  <li>
+                    <a
+                      href="{% url 'product_list' subcategoryvariant.id  subcategoryvariant.slug %}?category={{ subcategoryvariant.id }}"
+                      class="block pb-1 text-xs text-zinc-200 font-mono"
+                    >
+                      {{ subcategoryvariant.title }}
+                    </a>
+                  </li>
+                </ul>
+                {% endfor %} 
+              {% endif %}
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

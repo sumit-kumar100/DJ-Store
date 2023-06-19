@@ -1,0 +1,69 @@
+body {
+  overflow-x: hidden !important;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.custom-number-input input:focus {
+  outline: none !important;
+}
+
+.custom-number-input button:focus {
+  outline: none !important;
+}
+.errorlist {
+  width: 100%;
+  margin: auto;
+  list-style: none;
+  color: #842029;
+  background-color: #f8d7da;
+  border-color: #f5c2c7;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol";
+  font-size: 1 rem;
+  padding: 0.75rem 1.25rem;
+  margin: 0.5rem 0rem;
+  border-radius: 0.25rem;
+  text-align: center;
+}
+
+.error-message {
+  position: absolute;
+  top: 0px;
+  left: 100px;
+}
+
+.banner-image {
+  height: 350px !important;
+}
+.banner-btn {
+  height: 40px !important;
+  width: 40px !important;
+}
+
+#appendHere img{
+  height: 90px ;
+  width: 85px;
+}
+
+@media only screen and (max-width: 600px) {
+  .banner-image {
+    height: 180px !important;
+  }
+  .banner-btn {
+    height: 27.5px !important;
+    width: 27.5px !important;
+  }
+  #appendHere button{
+    width: 70px !important;
+    height: 75px !important;
+  }
+  #appendHere img{
+    height: 100% !important;
+  }
+}

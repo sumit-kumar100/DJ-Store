@@ -1,0 +1,281 @@
+{% extends 'base.html' %} {% load customfilters %} {% block content %}
+<div class="grid md:grid-cols-9 bg-white dark:bg-gray-900 p-0 sm:p-8 pb-6">
+  <div class="md:col-span-6">
+    <div class="m-5 p-5 bg-white dark:bg-gray-800 shadow-lg rounded-lg">
+      <h2
+        class="text-lg font-medium text-gray-900 dark:text-white text-center mb-4 mt-4"
+      >
+        Order summay
+      </h2>
+      <ul role="list" class="-my-6 divide-y divide-gray-200">
+        {% for item in request.user|cart %} 
+          {% if item.product_variant is not None %}
+          <li class="flex py-6" id="checkout-cart-item-{{ item.id }}">
+            <div
+              class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 dark:bg-slate-700"
+            >
+              <img
+                src="{{ item.product_variant.productvariantmedia_set.all.first.image.url }}"
+                alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt."
+                class="h-full w-full object-cover object-center"
+              />
+            </div>
+            <div class="ml-4 flex flex-1 flex-col">
+              <div>
+                <div
+                  class="flex justify-between text-xs sm:text-sm font-medium text-gray-900 dark:text-zinc-200"
+                >
+                  <h3 class="w-28 sm:w-auto">
+                    <a href="#">{{ item.product.title|truncatechars:50 }} - {{ item.product_variant.size.code }}</a>
+                  </h3>
+                  <div class="flex flex-col sm:flex-row">
+                    <span class="line-through dark:text-zinc-400">
+                      $ {{ item.product_variant.price }}
+                    </span>
+                    <span class="ml-4"
+                      >$ {{ item.product_variant.price|sale_price:item.product_variant.discount }}</span
+                    >
+                  </div>
+                </div>
+                <span class="mt-1 text-xs text-gray-500 dark:text-zinc-400 mr-2"
+                  >{{ item.product.brand }}</span
+                >
+                <br class="hidden sm:block" />
+                <span class="mt-0 sm:mt-1 text-xs text-red-600 dark:text-lime-400"
+                  >Save {{ item.product_variant.discount }} %</span
+                >
+              </div>
+              <div class="flex flex-1 justify-end text-sm">
+                <form method="post">
+                  {% csrf_token %}
+                  <input
+                    type="text"
+                    value="{{ item.id }}"
+                    hidden
+                    id="checkout-variant-id-{{ item.id }}"
+                  />
+                  <div class="relative">
+                    <div class="mt-1 mb-3 flex rounded-md justify-center">
+                      <button
+                        id="checkout-decrease-count"
+                        name="{{ item.id }}"
+                        type="button"
+                        class="relative inline-flex items-center space-x-2 px-4 py-2 text-xs sm:text-sm font-medium rounded-l-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 bg-gray-300"
+                      >
+                        -
+                      </button>
+                      <div class="relative flex items-stretch focus-within:z-10">
+                        <input
+                          id="checkout-quantity-{{ item.id }}"
+                          type="number"
+                          class="text-center focus:ring-blue-500 focus:border-indigo-500 block w-20 text-xs sm:text-sm text-gray-900 rounded-none pl-3 sm:text-sm border-gray-300 bg-gray-300"
+                          value="{{ item.quantity }}"
+                        />
+                      </div>
+                      <button
+                        id="checkout-increase-count"
+                        name="{{ item.id }}"
+                        type="button"
+                        class="relative inline-flex items-center space-x-2 px-4 py-2 text-xs sm:text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 bg-gray-300"
+                      >
+                        +
+                      </button>
+                    </div>
+                    <smaller
+                      id="checkout-message-{{ item.id }}"
+                      class="text-xs text-red-600"
+                    ></smaller>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </li>
+          {% else %}
+          <li class="flex py-6" id="checkout-cart-item-{{ item.id }}">
+            <div
+              class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200"
+            >
+              <img
+                src="{{ item.product.productmedia_set.all.first.image.url }}"
+                alt="{{ item.product.brand }} orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt."
+                class="h-full w-full object-cover object-center"
+              />
+            </div>
+
+            <div class="ml-4 flex flex-1 flex-col">
+              <div>
+                <div
+                  class="flex justify-between text-xs sm:text-sm font-medium text-gray-900"
+                >
+                  <h3 class="w-28 sm:w-auto">
+                    <a href="#">{{ item.product.title|truncatechars:50 }}</a>
+                  </h3>
+                  <div class="flex flex-col sm:flex-row">
+                    <span class="line-through dark:text-zinc-400">
+                      $ {{ item.product.price }}
+                    </span>
+                    <span class="ml-4"
+                      >$ {{ item.product.price|sale_price:item.product.discount }}</span
+                    >
+                  </div>
+                </div>
+                <span class="mt-1 text-xs text-gray-500 dark:text-zinc-400 mr-2"
+                  >{{ item.product.brand }}</span
+                >
+                <br class="hidden sm:block"  />
+                <span class="mt-0 sm:mt-1 text-xs text-red-600 dark:text-lime-400"
+                  >Save {{ item.product.discount }} %</span
+                >
+              </div>
+              <div class="flex flex-1 items-end justify-between text-sm">
+                <form method="post">
+                  {% csrf_token %}
+                  <input
+                    type="text"
+                    value="{{ item.id }}"
+                    hidden
+                    id="checkout-variant-id-{{ item.id }}"
+                  />
+                  <div class="relative">
+                    <div class="mt-1 mb-3 flex rounded-md justify-center">
+                      <button
+                        id="checkout-decrease-count"
+                        name="{{ item.id }}"
+                        type="button"
+                        class="relative inline-flex items-center space-x-2 px-4 py-2 text-xs sm:text-sm font-medium rounded-l-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 bg-gray-300"
+                      >
+                        -
+                      </button>
+                      <div class="relative flex items-stretch focus-within:z-10">
+                        <input
+                          id="checkout-quantity-{{ item.id }}"
+                          type="number"
+                          class="text-center focus:ring-blue-500 focus:border-indigo-500 block w-20 text-xs sm:text-sm text-gray-900 rounded-none pl-3 sm:text-sm border-gray-300 bg-gray-300"
+                          value="{{ item.quantity }}"
+                        />
+                      </div>
+                      <button
+                        id="checkout-increase-count"
+                        name="{{ item.id }}"
+                        type="button"
+                        class="relative inline-flex items-center space-x-2 px-4 py-2 text-xs sm:text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 bg-gray-300"
+                      >
+                        +
+                      </button>
+                    </div>
+                    <smaller
+                      id="checkout-message-{{ item.id }}"
+                      class="text-xs text-red-600"
+                    ></smaller>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </li>
+          {% endif %} 
+        {% endfor %}
+      </ul>
+      <br /><br />
+      <div class="flex justify-between font-medium text-gray-900">
+        <p class="dark:text-zinc-200">Grand Total</p>
+        <p class="cart-sum dark:text-white">
+          $ {{ cart|total_payable_amount }}
+        </p>
+      </div>
+      <p class="mt-0.5 text-sm text-gray-500 dark:text-gray-400">
+        Included shipping and taxes.
+      </p>
+
+      <div class="flex justify-center mt-6">
+        <button
+          type="button"
+          class="font-medium text-indigo-600 hover:text-indigo-500"
+        >
+          <a href="/">
+            Continue Shopping
+            <span aria-hidden="true"> &rarr;</span>
+          </a>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="md:col-span-3">
+    <div class="m-5 p-5 bg-white dark:bg-gray-800 shadow-lg rounded-lg">
+      <div class="p-0 space-y-4 md:space-y-2 sm:p-4">
+        <h2
+          class="text-lg font-medium text-gray-900 text-center mb-4 mt-0 dark:text-white"
+        >
+          Choose Address
+        </h2>
+        {% if form %}
+        <form action="" method="POST">
+          <div class="form-group">
+            {% if not address %}
+            <a
+              href="/accounts/profile/?tab=address&next=/checkout"
+              class="lg:mt-2 xl:mt-0 flex-shrink-0 text-sm mb-4 inline-flex text-white bg-indigo-600 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-700 rounded"
+            >
+              Address +
+            </a>
+            {% else %}
+            <label class="leading-7 text-sm text-gray-500 dark:text-gray-100"
+              >Delivery Address</label
+            >
+            <select
+              required
+              name="address"
+              id="address{{ forloop.counter }}"
+              class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-zinc-200 dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-1 mb-4"
+            >
+              <option value="">---------</option>
+              {% for ad in address %}
+              <option value="{{ ad.id }}">
+                {{ ad.locality }} , {{ ad.state }} - {{ ad.zipcode }}
+              </option>
+              {% endfor %}
+            </select>
+            {% endif %}
+          </div>
+          {{ form.non_field_errors }} {% csrf_token %} {% for field in form %}
+          <!-- form is default name in CreateView -->
+          <div class="form-group">
+            <label class="leading-7 text-sm text-gray-500 dark:text-gray-100"
+              >{{ field.label }}</label
+            >
+            {% if field.field.widget.input_type == 'select' %} 
+              {{ field }} 
+            {% else %}
+            <input
+              type="{{ field.field.widget.input_type }}"
+              id="{{ field.name }}"
+              name="{{ field.name }}"
+              placeholder="Enter {{ field.name }}"
+              required
+            />
+            {% endif %} {{ field.errors }}
+          </div>
+          {% endfor %}
+          <div class="text-xs mb-3 dark:text-zinc-200">
+            Card Number : 4242 4242 4242 4242
+            <br />
+            Expiry : 01/25
+            <br />
+            CVV : 111
+          </div>
+          <div class="form-group">
+            <input
+              {% if not address or not cart %} disabled {% endif %}
+              type="submit"
+              value="Place Order"
+              class="mb-2 sm:mb-0 lg:mt-2 w-full xl:mt-0 cursor-pointer flex-shrink-0 text-white bg-indigo-600 text-sm border-0 py-2 px-6 focus:outline-none rounded {% if not address or not cart %} bg-zinc-200 {% else %} hover:bg-indigo-700 {% endif %}"
+            />
+          </div>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% include 'footer.html' %} 
+
+{% endblock %}

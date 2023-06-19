@@ -1,0 +1,228 @@
+{% extends 'base.html' %} {% load customfilters %} {% block content %}
+<div class="flex gap-5 dark:bg-slate-900 h-screen">
+  <div
+    class="hidden md:block w-1/6 dark:bg-slate-800 px-4 shadow-2xl"
+    style="height: 100vh"
+  >
+    <form action="" id="submitForm" method="GET">
+      <br />
+      <div class="form-group">
+        <span class="font-mono text-xs text-gray-600 dark:text-white mb-4"
+          >Color</span
+        >
+        <br /><br />
+        {% if color_filter %} 
+          {% for color in color_filter %}
+          <div class="flex items-center ml-4 mb-4">
+            <input
+              onchange="submitForm()"
+              value="{{ color.id }}"
+              {% if color.id|filter_active:active_color_filter %} checked {% endif %}
+              type="checkbox"
+              class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+              name="color"
+              id="color"
+            />
+            <span
+              class="ml-3 rounded-full border"
+              style='background-color: {{ color.code }}; width: 20px; height: 20px;'
+            ></span>
+          </div>
+          {% endfor %}
+         {% else %}
+        <div class="flex items-center ml-4">
+          <input
+            checked
+            disabled
+            type="checkbox"
+            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+            name="color"
+            id="color"
+          />
+          <label
+            class="ml-3 min-w-0 flex-1 text-xs text-gray-500 dark:text-zinc-200"
+            >out of stock</label
+          >
+        </div>
+        {% endif %}
+      </div>
+      <br />
+      <div class="">
+        <span class="font-mono text-xs text-gray-600 dark:text-white mb-4"
+          >Category</span
+        >
+        <br /><br />
+        {% if category_filter %} 
+          {% for category in category_filter %}
+          <div  class="flex items-center ml-4 mb-4">
+            <input
+              {% if category.id|filter_active:active_category_filter %} checked {% endif %}
+              onchange="submitForm()"
+              value="{{ category.id }}" 
+              type="checkbox"
+              class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+              name="category"
+            />
+            <label
+              class="ml-3 min-w-0 flex-1 text-xs text-gray-500 dark:text-zinc-200"
+              >{{ category.title }}</label
+            >
+          </div>
+          {% endfor %} 
+        {% else %}
+        <div class="flex items-center ml-4">
+          <input
+            checked
+            disabled
+            type="checkbox"
+            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+            name="color"
+            id="color"
+          />
+          <label
+            class="ml-3 min-w-0 flex-1 text-xs text-gray-500 dark:text-zinc-200"
+            >out of stock</label
+          >
+        </div>
+        {% endif %}
+      </div>
+      <br />
+      <div class="form-group">
+        <span class="font-mono text-xs text-gray-600 dark:text-white mb-4"
+          >Size</span
+        >
+        <br /><br />
+        {% if size_filter %} 
+          {% for size in size_filter %}
+          <div class="flex items-center ml-4 mb-4">
+            <input
+              onchange="submitForm()"
+              value="{{ size.id }}"
+              {% if size.id|filter_active:active_size_filter %} checked {% endif %}
+              type="checkbox"
+              class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+              name="size"
+              id="size"
+            />
+            <label
+              class="ml-3 min-w-0 flex-1 text-xs text-gray-500 dark:text-zinc-200"
+              >{{ size.name }}</label
+            >
+          </div>
+          {% endfor %} 
+        {% else %}
+        <div class="flex items-center ml-4">
+          <input
+            checked
+            disabled
+            type="checkbox"
+            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+            name="color"
+            id="color"
+          />
+          <label
+            class="ml-3 min-w-0 flex-1 text-xs text-gray-500 dark:text-zinc-200"
+            >out of stock</label
+          >
+        </div>
+        {% endif %}
+      </div>
+    </form>
+  </div>
+  <section
+    class="text-gray-600 bg-white dark:bg-gray-900 body-font w-full md:w-4/5"
+  >
+    <div class="container px-1 sm:px-5 py-5 mx-auto">
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center">
+        {% for product in products %} 
+        {% if product.variant != 'None' %}
+        <div class="dark:bg-slate-800 shadow-lg rounded-2xl">
+          <div class="h-full overflow-hidden">
+            <a
+              class="block relative h-44 sm:h-48 rounded overflow-hidden"
+              href="{% url 'product_detail' product.id product.slug %}"
+            >
+              <img
+                alt="ecommerce"
+                class="object-center block w-full h-auto"
+                src="{{ product.productmedia_set.all.first.image.url }}"
+              />
+            </a>
+            <a href="{% url 'product_detail' product.id product.slug %}">
+              <div class="p-2 sm:mt-4 md:p-6">
+                <h3
+                  class="text-gray-500 text-xs tracking-widest title-font mb-1 text-gray-400 dark:text-zinc-400"
+                >
+                  {{ product.brand}}
+                </h3>
+                <h2
+                  class="text-gray-900 title-font text:sm sm:text-lg font-medium dark:text-zinc-200"
+                >
+                  {{ product.title }}
+                </h2>
+                <p class="mt-1 mb-2 text-sm md:text-md">
+                  <span class="line-through dark:text-zinc-400">
+                    $ {{ product.productvariant_set.all.first.price }}
+                  </span>
+                  &nbsp;&nbsp;
+                  <span class="text-gray-900 dark:text-zinc-200">
+                    $ {{ product.productvariant_set.all.first.price|sale_price:product.productvariant_set.all.first.discount }}
+                  </span>
+                  &nbsp;&nbsp;
+                  <span class="text-red-600 dark:text-lime-400">
+                    {{ product.productvariant_set.all.first.discount }} %
+                  </span>
+                </p>
+              </div>
+            </a>
+          </div>
+        </div>
+        {% else %}
+        <div class="dark:bg-slate-800 shadow-lg rounded-2xl">
+          <div class="h-full overflow-hidden">
+            <a
+              class="block relative h-44 sm:h-48 rounded overflow-hidden"
+              href="{% url 'product_detail' product.id product.slug %}"
+            >
+              <img
+                alt="ecommerce"
+                class="object-center block w-full h-auto"
+                src="{{ product.productmedia_set.all.first.image.url }}"
+              />
+            </a>
+            <a href="{% url 'product_detail' product.id product.slug %}">
+              <div class="p-2 sm:mt-4 md:p-6">
+                <h3
+                  class="text-gray-500 text-xs tracking-widest title-font mb-1 text-gray-400 dark:text-zinc-400"
+                >
+                  {{ product.brand }}
+                </h3>
+                <h2
+                  class="text-gray-900 title-font text:sm sm:text-lg font-medium dark:text-zinc-200"
+                >
+                  {{ product.title }}
+                </h2>
+                <p class="mt-1 mb-2 text-sm md:text-md">
+                  <span class="line-through dark:text-zinc-400">
+                    $ {{ product.price }}
+                  </span>
+                  &nbsp;&nbsp;
+                  <span class="text-gray-900 dark:text-zinc-200">
+                    $ {{ product.price|sale_price:product.discount }}
+                  </span>
+                  &nbsp;&nbsp;
+                  <span class="text-red-600 dark:text-lime-400">
+                    {{ product.discount }} %
+                  </span>
+                </p>
+              </div>
+            </a>
+          </div>
+        </div>
+        {% endif %} 
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

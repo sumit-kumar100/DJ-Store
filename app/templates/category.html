@@ -1,0 +1,36 @@
+{% load customfilters %}
+{% block category %}
+<div class="category-content">
+    {% for product in products %}
+        {% if product.variant != 'None' %}
+            <a href="{% url 'product_detail' product.id product.slug %}">
+                <div class="item">
+                    <img src="{{ product.productmedia_set.all.first.image.url }}" alt=""> <!-- if product has a vareint getting first product variant from all variant and then further getting the first product variant media from all product variant media that belongs to first product variant -->
+                    <br><br>
+                    <p class="title">{{ product.title }}</p>
+                    <p class="discount">Save {{ product.productvariant_set.all.first.discount }} %</p>
+                    <span class="delete">
+                        <del>₹ {{ product.productvariant_set.all.first.price }}</del>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span style="color:black;">₹ {{ product.productvariant_set.all.first.price|sale_price:product.productvariant_set.all.first.discount }}</span>
+                    </span>
+                </div>
+            </a>
+        {% else %}
+            <a href="{% url 'product_detail' product.id product.slug %}">
+                <div class="item">
+                    <img src="{{ product.productmedia_set.all.first.image.url }}" alt=""> <!-- if product has a vareint getting first product variant from all variant and then further getting the first product variant media from all product variant media that belongs to first product variant -->
+                    <br><br>
+                    <p class="title">{{ product.title }}</p>
+                    <p class="discount">Save {{ product.discount }} %</p>
+                    <span class="delete">
+                        <del>₹ {{ product.price }}</del>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span style="color:black;">₹ {{ product.price|sale_price:product.discount }}</span>
+                    </span>
+                </div>
+            </a>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endblock %}

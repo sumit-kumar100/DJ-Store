@@ -1,0 +1,247 @@
+{% load customfilters %} {% load static %} {% block cart %}
+<div
+  id="cart"
+  class="translate-x-full fixed top-0 right-0 w-fit bg-white shadow text-white fixed h-screen z-40 ease-in-out duration-300 dark:bg-gray-900 overflow-y-scroll"
+>
+  <div class="flex-1 overflow-y-auto py-6 px-4 sm:px-6">
+    <div class="flex m-6 items-start justify-between">
+      <h2
+        class="text-lg font-medium text-gray-900 dark:text-white"
+        id="slide-over-title"
+      >
+        Shopping cart
+      </h2>
+      <div class="ml-3 flex h-7 items-center">
+        <button
+          type="button"
+          class="-m-2 p-2 text-gray-400 hover:text-gray-500"
+          onclick="showCart(event)"
+        >
+          <span class="sr-only">Close panel</span>
+          <svg
+            class="h-6 w-6 dark:text-white"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="mt-8">
+      <div class="flow-root">
+        <ul role="list" class="-my-6 divide-y divide-gray-200">
+          {% for item in request.user|cart %} 
+            {% if item.product_variant is not None %}
+            <li class="flex py-6" id="cart-item-{{ item.id }}">
+              <div
+                class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 dark:bg-slate-700"
+              >
+                <img
+                  src="{{ item.product_variant.productvariantmedia_set.all.first.image.url }}"
+                  alt="{{ item.product.brand }} orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt."
+                  class="h-full w-full object-cover object-center"
+                />
+              </div>
+
+              <div class="ml-4 flex flex-1 flex-col">
+                <div>
+                  <div
+                    class="flex justify-between text-base font-medium text-gray-900 dark:text-zinc-200"
+                  >
+                    <h3 class="w-28 sm:w-32 text-xs">
+                      <a href="#">{{ item.product_variant.title|truncatechars:30 }}</a>
+                    </h3>
+                    <p class="ml-4 text-xs">
+                      $ {{ item.product_variant.price|sale_price:item.product_variant.discount }}
+                    </p>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="mt-1 text-sm text-gray-500 dark:text-zinc-400 text-xs"
+                      >{{ item.product.brand }}</span
+                    >
+                    <span class="mt-1 text-sm text-red-600 dark:text-lime-400 text-xs"
+                      >Save {{ item.product_variant.discount }} %</span
+                    >
+                  </div>
+                </div>
+                <div class="flex flex-1 items-end justify-between text-sm">
+                  <form method="post">
+                    {% csrf_token %}
+                    <input
+                      type="text"
+                      value="{{ item.id }}"
+                      hidden
+                      id="variant-id-{{ item.id }}"
+                    />
+                    <div class="z-50 relative">
+                      <div class="mt-2 sm:mt-1 mb-3 flex rounded-md justify-center">
+                        <button
+                          id="decrease-count"
+                          name="{{ item.id }}"
+                          type="button"
+                          class="relative inline-flex items-center space-x-2 px-4 py-2 text-xs font-medium rounded-l-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 bg-gray-300"
+                        >
+                          -
+                        </button>
+                        <div
+                          class="relative flex items-stretch focus-within:z-10"
+                        >
+                          <input
+                            id="quantity-{{ item.id }}"
+                            type="number"
+                            class="text-center focus:ring-blue-500 focus:border-indigo-500 block w-20 text-xs text-gray-900 rounded-none pl-3 sm:text-sm border-gray-300 bg-gray-300"
+                            value="{{ item.quantity }}"
+                          />
+                        </div>
+                        <button
+                          id="increase-count"
+                          name="{{ item.id }}"
+                          type="button"
+                          class="relative inline-flex items-center space-x-2 px-4 py-2 text-xs font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 bg-gray-300"
+                        >
+                          +
+                        </button>
+                      </div>
+                      <smaller
+                        id="message-{{ item.id }}"
+                        class="text-xs text-red-600"
+                      ></smaller>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </li>
+            {% else %}
+            <li class="flex py-6" id="cart-item-{{ item.id }}">
+              <div
+                class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200"
+              >
+                <img
+                  src="{{ item.product.productmedia_set.all.first.image.url }}"
+                  alt="{{ item.product.brand }} orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt."
+                  class="h-full w-full object-cover object-center"
+                />
+              </div>
+
+              <div class="ml-4 flex flex-1 flex-col">
+                <div>
+                  <div
+                    class="flex justify-between text-base font-medium text-gray-900 dark:text-zinc-200"
+                  >
+                    <h3 class="w-28 sm:w-32 text-xs">
+                      <a href="#">{{ item.product.title|truncatechars:30 }}</a>
+                    </h3>
+                    <p class="ml-4 text-xs">
+                      $ {{ item.product.price|sale_price:item.product.discount }}
+                    </p>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="mt-1 text-sm text-gray-500 dark:text-zinc-400 text-xs"
+                      >{{ item.product.brand }}</span
+                    >
+                    <span class="mt-1 text-sm text-red-600 dark:text-lime-400 text-xs"
+                      >Save {{ item.product.discount }} %</span
+                    >
+                  </div>
+                </div>
+                <div class="flex flex-1 items-end justify-between text-sm">
+                  <form method="post">
+                    {% csrf_token %}
+                    <input
+                      type="text"
+                      value="{{ item.id }}"
+                      hidden
+                      id="variant-id-{{ item.id }}"
+                    />
+                    <div class="z-50 relative">
+                      <div class="mt-2 sm:mt-1 mb-3 flex rounded-md justify-center">
+                        <button
+                          id="decrease-count"
+                          name="{{ item.id }}"
+                          type="button"
+                          class="relative inline-flex items-center space-x-2 px-4 py-2 text-xs font-medium rounded-l-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 bg-gray-300"
+                        >
+                          -
+                        </button>
+                        <div
+                          class="relative flex items-stretch focus-within:z-10"
+                        >
+                          <input
+                            id="quantity-{{ item.id }}"
+                            type="number"
+                            class="text-center focus:ring-blue-500 focus:border-indigo-500 block w-20 text-xs text-gray-900 rounded-none pl-3 sm:text-sm border-gray-300 bg-gray-300"
+                            value="{{ item.quantity }}"
+                          />
+                        </div>
+                        <button
+                          id="increase-count"
+                          name="{{ item.id }}"
+                          type="button"
+                          class="relative inline-flex items-center space-x-2 px-4 py-2 text-xs font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 bg-gray-300"
+                        >
+                          +
+                        </button>
+                      </div>
+                      <smaller
+                        id="message-{{ item.id }}"
+                        class="text-xs text-red-600"
+                      ></smaller>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </li>
+            {% endif %} 
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="border-t dark:border-t-0 border-gray-200 dark:border-gray-900 py-6 px-4 sm:px-6"
+  >
+    <div class="flex justify-between text-base font-medium text-gray-900">
+      <p>Subtotal</p>
+      <p class="cart-sum dark:text-white">
+        $ {{ request.user|cart|total_payable_amount }}
+      </p>
+    </div>
+    <p class="mt-0.5 text-sm text-gray-500 dark:text-zinc-400">
+      Shipping and taxes calculated at checkout.
+    </p>
+    <div class="mt-6">
+      <a 
+        {% if request.user.is_authenticated %} href="{% url 'checkout' %}" {% endif %}
+        class="flex items-center justify-center rounded-md border border-transparent cursor-pointer {% if request.user.is_authenticated %} bg-indigo-600 {% else %} bg-indigo-600 {% endif %} px-6 py-3 text-base font-medium text-white shadow-sm hover:hover:bg-indigo-700"
+      >
+        Checkout
+    </a>
+    </div>
+    <div class="mt-6 flex justify-center text-center text-sm text-gray-500">
+      <p class="text-gray-500 dark:text-zinc-400">
+        or
+        <button
+          type="button"
+          class="font-medium text-indigo-600 hover:text-indigo-500"
+        >
+          <a href="/">
+            Continue Shopping
+            <span aria-hidden="true"> &rarr;</span>
+          </a>
+        </button>
+      </p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

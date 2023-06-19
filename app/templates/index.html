@@ -1,0 +1,171 @@
+{% extends "base.html" %} 
+{% load static %} 
+{% load customfilters %} 
+{% block content %}
+<section class="bg-white dark:bg-gray-900">
+  <div id="controls-carousel" class="relative" data-carousel="static">
+    <div class="relative overflow-hidden banner-image">
+      {% for slider in sliders %}
+      <div
+        class="{% if forloop.counter != 1 %} -translate-x-full {% else %} translate-x-100 {% endif %}"
+        id="carousel-{{ forloop.counter }}"
+      >
+        <img
+          src="{{ slider.image.url }}"
+          class="absolute block w-full h-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+          alt="..."
+        />
+      </div>
+      <button
+        type="button "
+        onclick="handleCarousel('{{ forloop.counter }}','{{ sliders|length }}','decrease')"
+        class="{% if forloop.counter != 1 %} invisible {% else %} visible{% endif %} absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+        id="prev-btn-{{ forloop.counter }}"
+      >
+        <span
+          class="banner-btn inline-flex items-center justify-center rounded-full bg-white/30 dark:bg-gray-900/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none"
+        >
+          <svg
+            aria-hidden="true"
+            class="w-6 h-6 text-white dark:text-white"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+          <span class="sr-only">Previous</span>
+        </span>
+      </button>
+      <button
+        type="button"
+        onclick="handleCarousel('{{ forloop.counter }}','{{ sliders|length }}','increase')"
+        class="{% if forloop.counter != 1 %} invisible {% else %} visible {% endif %} absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+        id="next-btn-{{ forloop.counter }}"
+      >
+        <span
+          class="banner-btn inline-flex items-center justify-center rounded-full bg-white/30 dark:bg-gray-900/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none"
+        >
+          <svg
+            aria-hidden="true"
+            class="w-6 h-6 text-white dark:text-white"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+          <span class="sr-only">Next</span>
+        </span>
+      </button>
+      {% endfor %}
+    </div>
+  </div>
+  <h2 class="text-3xl font-serif text-center pt-12 pb-6 dark:text-white">
+    Deal of Day
+  </h2>
+  <div class="text-gray-600 body-font mb-6">
+    <div class="container px-1 sm:px-5 py-5 mx-auto">
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center">
+        {% for trend in dealofday %} 
+          {% if trend.product.variant != 'None' %}
+          <div class="dark:bg-slate-800 shadow-lg rounded-2xl">
+            <div class="h-full overflow-hidden">
+              <a
+                class="block relative h-44 sm:h-48 rounded overflow-hidden"
+                href="{% url 'product_detail' trend.product.id trend.product.slug %}"
+              >
+                <img
+                  alt="ecommerce"
+                  class="object-center block w-full h-auto"
+                  src="{{ trend.product.productvariant_set.all.first.productvariantmedia_set.all.first.image.url }}"
+                />
+              </a>
+              <a
+                href="{% url 'product_detail' trend.product.id trend.product.slug %}"
+              >
+                <div class="p-2 sm:mt-4 md:p-6">
+                  <h3
+                    class="text-gray-500 text-xs tracking-widest title-font mb-1 text-gray-400 dark:text-lime-400"
+                  >
+                    Save {{ trend.product.productvariant_set.all.first.discount }}%
+                  </h3>
+                  <h2
+                  class="text-gray-900 title-font text:sm sm:text-lg font-medium dark:text-zinc-200"
+                  >
+                    {{ trend.product.title }}
+                  </h2>
+                  <p class="mt-1 mb-2 text-sm md:text-md">
+                    <span class="line-through dark:text-zinc-400">
+                      $ {{ trend.product.productvariant_set.all.first.price }}
+                    </span>
+                    &nbsp;&nbsp;
+                    <span class="text-gray-900 dark:text-zinc-200">
+                      $ {{ trend.product.productvariant_set.all.first.price|sale_price:trend.product.productvariant_set.all.first.discount }}
+                    </span>
+                  </p>
+                </div>
+              </a>
+            </div>
+          </div>
+          {% else %}
+          <div class="dark:bg-slate-800 shadow-lg rounded-2xl">
+            <div class="h-full overflow-hidden">
+              <a
+              class="block relative h-44 sm:h-48 rounded overflow-hidden"
+                href="{% url 'product_detail' trend.product.id trend.product.slug %}"
+              >
+                <img
+                  alt="ecommerce"
+                  class="object-center block w-full h-auto"
+                  src="{{ trend.product.productmedia_set.all.first.image.url }}"
+                />
+              </a>
+              <a
+                href="{% url 'product_detail' trend.product.id trend.product.slug %}"
+              >
+                <div class="p-2 sm:mt-4 md:p-6">
+                  <h3
+                    class="text-gray-500 text-xs tracking-widest title-font mb-1 text-gray-400 dark:text-lime-400"
+                  >
+                    {{ trend.product.discount }}%
+                  </h3>
+                  <h2
+                  class="text-gray-900 title-font text:sm sm:text-lg font-medium dark:text-zinc-200"
+                  >
+                    {{ trend.product.title }}
+                  </h2>
+                  <p class="mt-1 mb-2 text-sm md:text-md">
+                    <span class="line-through dark:text-zinc-400">
+                      $ {{ trend.product.price }}
+                    </span>
+                    &nbsp;&nbsp;
+                    <span class="text-gray-900 dark:text-zinc-200">
+                      $ {{ trend.product.price|sale_price:trend.product.discount }}
+                    </span>
+                  </p>
+                </div>
+              </a>
+            </div>
+          </div>
+          {% endif %} 
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% include 'footer.html' %}
+</section>
+
+{% endblock %}

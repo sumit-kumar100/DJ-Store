@@ -1,0 +1,555 @@
+{% extends 'base.html' %} {% load customfilters %} {% block content %}
+<section
+  class="bg-white dark:bg-gray-900 text-gray-600 body-font overflow-hidden"
+>
+  <div class="px-3 md:px-6 lg:px-0 py-1 mx-auto">
+    <div class="lg:w-11/12 mx-auto flex flex-wrap">
+      <div class="lg:w-1/2 grid grid-cols-1 lg:grid-cols-6 gap-4 w-full">
+        {% if product.variant != 'None' %}
+        <div class="md:col-span-1 flex lg:flex-col overflow-scroll gap-4 lg:p-1">
+          {% for image in variant.productvariantmedia_set.all %}
+          <img
+            src="{{ image.image.url }}"
+            class="border rounded cursor-pointer object-center object-cover w-24 h-24 thumbnail dark:bg-slate-700"
+            alt=""
+          />
+          {% endfor %}
+        </div>
+        <div class="md:col-span-5 flex justify-center items-center">
+          <img
+            src="{{ variant.productvariantmedia_set.all.first.image.url }}"
+            class="object-cover object-center main-image rounded lg:p-1"
+            style="width:100%; height:auto; max-height:465px;"
+            alt=""
+          />
+        </div>
+        {% else %}
+        <div class="md:col-span-1 flex lg:flex-col overflow-scroll gap-4">
+          {% for image in product.productmedia_set.all %}
+          <img
+            src="{{ image.image.url }}"
+            class="border rounded cursor-pointer object-center object-cover w-24 h-24 thumbnail dark:bg-slate-700"
+            alt=""
+          />
+          {% endfor %}
+        </div>
+        <div class="md:col-span-5 flex justify-center items-center">
+          <img
+            src="{{ product.productmedia_set.all.first.image.url }}"
+            class="object-cover object-center main-image rounded lg:p-1"
+            style="width:100%; height:auto; max-height:465px;"
+            alt=""
+          />
+        </div>
+        {% endif %}
+      </div>
+      <div class="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
+        <div class="flex flex-col md:flex-row md:justify-between md:items-center">
+          <div>
+            <h2
+              class="text-sm title-font text-gray-500 tracking-widest dark:text-zinc-400"
+            >
+              {{ product.brand }}
+            </h2>
+            <h1
+              class="text-gray-900 text-3xl title-font font-medium mb-1 dark:text-zinc-200"
+            >
+              {{ product.title }}
+            </h1>
+          </div>
+          <div class="flex mb-4">
+            <span class="flex items-center">
+              <svg
+                fill="currentColor"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                class="w-4 h-4 text-indigo-500"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                />
+              </svg>
+              <svg
+                fill="currentColor"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                class="w-4 h-4 text-indigo-500"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                />
+              </svg>
+              <svg
+                fill="currentColor"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                class="w-4 h-4 text-indigo-500"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                />
+              </svg>
+              <svg
+                fill="currentColor"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                class="w-4 h-4 text-indigo-500"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                />
+              </svg>
+              <svg
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                class="w-4 h-4 text-indigo-500"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                />
+              </svg>
+              <span class="text-gray-600 ml-3 dark:text-zinc-400"
+                >4 Reviews</span
+              >
+            </span>
+          </div>
+        </div>
+        <p class="leading-relaxed dark:text-zinc-300">
+          {{ product.description }}
+        </p>
+
+        {% if not variant %}<br/><br><br>{% endif %}
+
+        <small class="uppercase hidden dark:text-zinc-300">
+          <strong class="text-gray-900 dark:text-zinc-300">
+            Availability &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :
+          </strong>
+          {% if variant.quantity > 0 %} In Stock {% else %} Out of Stock {% endif %}
+        </small>
+
+        <!-- Selected -->
+        {% if product.variant != 'None' %} 
+        <div class="flex flex-col absolute right-10 w-52 mt-4 md:mt-0 md:w-56 border rounded-lg p-2 md:p-4">
+          {% if variant.size %}
+          <small
+            class="uppercase text-lime-700 dark:text-lime-400"
+            style="font-size: 11px"
+          >
+            <strong class="text-gray-900 dark:text-zinc-200">
+              Selected Size &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :
+              &nbsp;&nbsp;
+            </strong>
+            {{ variant.size }}
+          </small>
+          {% endif %}
+          {% if variant.color %}
+          <small
+            class="uppercase text-lime-700 dark:text-lime-400"
+            style="font-size: 11px"
+          >
+            <strong class="text-gray-900 dark:text-zinc-200">
+              Selected Color &nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;
+            </strong>
+            {{ variant.color }}
+          </small>
+          {% endif %} 
+          </div>
+        {% endif %}
+        <div class="flex mt-1 items-center border-b-2 border-gray-100 mb-5">
+          {% if product.variant == 'Size-Color' %}
+          <div class="content-container">
+            <form method="POST" id="post-form" class="mb-4">
+              {% csrf_token %}
+              <div class="custom-select">
+                <input
+                  type="hidden"
+                  name="productid"
+                  id="productid"
+                  value="{{ product.id }}"
+                />
+                <span class="font-mono text-xs text-gray-600 dark:text-zinc-300"
+                  >Size :</span
+                >
+                <select
+                  name="size"
+                  id="size"
+                  class="form-select appearance-none block w-20 px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-zinc-200 dark:focus:ring-blue-500 dark:focus:border-blue-500 m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                >
+                  {% for variant_size in sizes %}
+                    <option 
+                      {% if variant.size_id == variant_size.size_id %} selected {% endif %} 
+                      value="{{ variant_size.size_id }}"
+                    >
+                            {{ variant_size.size.code }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </div>
+            </form>
+            <form method="post" action="" id="post-color" class="h-32 sm:h-36">
+              {% csrf_token %}
+              <div id="appendHere">
+                <input
+                  type="hidden"
+                  name="size"
+                  id="size"
+                  value="{{ size_id }}"
+                />
+                <span class="font-mono text-xs text-gray-600 dark:text-zinc-300"
+                  >Color :</span
+                >
+                <div class="flex overflow-scroll">
+                  {% for variant_color in colors %}
+                    {% if variant.color_id == variant_color.color_id %} 
+                      <button
+                        class="border rounded border-indigo-800 mr-4 sm:mr-1"
+                        onchange="this.form.submit();"
+                        name="variantid"
+                        id="variantid"
+                        value="{{ variant_color.id }}"
+                      >
+                        <a>
+                          <img
+                            src="{{ variant_color.productvariantmedia_set.all.first.image.url }}"
+                            class="rounded {% if variant.color_id == variant_color.color_id %} dark:bg-slate-700 {% endif %}"
+                          />
+                        </a>
+                      </button>
+                    {% endif %}
+                  {% endfor %}
+                  {% for variant_color in colors %}
+                    {% if variant.color_id != variant_color.color_id %} 
+                      <button
+                        class="border rounded mr-4 sm:mr-1"
+                        onchange="this.form.submit();"
+                        name="variantid"
+                        id="variantid"
+                        value="{{ variant_color.id }}"
+                      >
+                        <a>
+                          <img
+                            src="{{ variant_color.productvariantmedia_set.all.first.image.url }}"
+                            class="rounded {% if variant.color_id == variant_color.color_id %} dark:bg-slate-700 {% endif %}"
+                          />
+                        </a>
+                      </button>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+            </form>
+          </div>
+          {% elif product.variant == 'Size' %}
+          <div class="content-container">
+            <form method="post" action="" id="post-size">
+              {% csrf_token %}
+              <div id="appendHere">
+                <input
+                  type="hidden"
+                  name="size"
+                  id="size"
+                  value="{{ size_id }}"
+                />
+                <span class="font-mono text-xs text-gray-600 dark:text-zinc-300"
+                  >Size :</span
+                >
+                <div class="detail">
+                  <select
+                    name="variantid"
+                    id="variantid"
+                    class="form-select appearance-none block w-20 px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-zinc-200 dark:focus:ring-blue-500 dark:focus:border-blue-500 m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                    onchange="this.form.submit();"
+                  >
+                    {% for variant_size in sizes %}
+                      <option
+                        {% if variant.size_id == variant_size.size_id %} selected {% endif %} 
+                        value="{{ variant_size.size_id }}"
+                      >
+                          {{ variant_size.size.code }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+            </form>
+          </div>
+          {% elif product.variant == 'Color' %}
+          <div class="content-container">
+            <form method="post" action="" id="post-color">
+              {% csrf_token %}
+              <div id="appendHere">
+                <input
+                  type="hidden"
+                  name="size"
+                  id="size"
+                  value="{{ size_id }}"
+                />
+                <span class="font-mono text-xs text-gray-600 dark:text-zinc-300"
+                  >Color :</span
+                >
+                <div class="flex overflow-scroll">
+                  {% for variant_color in colors %}
+                    {% if variant.color_id == variant_color.color_id %} 
+                      <button
+                        class="border rounded border-indigo-800 mr-4 sm:mr-1"
+                        onchange="this.form.submit();"
+                        name="variantid"
+                        id="variantid"
+                        value="{{ variant_color.id }}"
+                      >
+                        <a>
+                          <img
+                            src="{{ variant_color.productvariantmedia_set.all.first.image.url }}"
+                            class="rounded {% if variant.color_id == variant_color.color_id %} dark:bg-slate-700 {% endif %}"
+                          />
+                        </a>
+                      </button>
+                    {% endif %}
+                  {% endfor %}
+                  {% for variant_color in colors %}
+                    {% if variant.color_id != variant_color.color_id %} 
+                      <button
+                        class="border rounded mr-4 sm:mr-1"
+                        onchange="this.form.submit();"
+                        name="variantid"
+                        id="variantid"
+                        value="{{ variant_color.id }}"
+                      >
+                        <a>
+                          <img
+                            src="{{ variant_color.productvariantmedia_set.all.first.image.url }}"
+                            class="rounded {% if variant.color_id == variant_color.color_id %} dark:bg-slate-700 {% endif %}"
+                          />
+                        </a>
+                      </button>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+            </form>
+          </div>
+          {% endif %}
+        </div>
+        {% if not variant %}<br/><br><br>{% endif %}
+        <div class="grid md:grid-cols-8">
+          <span class="line-through dark:text-zinc-400 text-2xl col-span-2">
+            {% if product.variant != 'None' %} $ {{ variant.price }} {% else %} $ {{ product.price }} {% endif %}
+          </span>
+          <span
+            class="title-font font-medium text-2xl text-right text-gray-900 dark:text-zinc-200 col-span-1"
+          >
+            {% if product.variant != 'None' %} $ {{ variant.price|sale_price:variant.discount }} {% else %} $ {{ product.price|sale_price:product.discount }} {% endif %}
+          </span>
+          <span
+            class="text-red-600 text-sm tracking-widest title-font mt-2 md:text-center blo col-span-2"
+          >
+            {% if product.variant != 'None' %} Save {{ variant.discount }}% {% else %} Save {{ variant.discount }}% {% endif %}
+          </span>
+            {% if product.variant != 'None' %}
+            <form
+              class="col-span-3"
+              action="{% if request.user.is_authenticated %} {% url 'add_to_cart' %} {% else %} {% url 'add_to_cart' %}?path={{request.path}} {% endif %}"
+              method="POST"
+            >
+              {% csrf_token %}
+              <input type="text" hidden value="{{ request.path }}" name="path" />
+              <input
+                type="text"
+                hidden
+                value="{{ variant.id }}"
+                name="variant_id"
+              />
+              {% if request.user.is_authenticated %}
+                {% if variant.id|is_variant_in_cart:request.user %}
+                <button
+                  type="button"
+                  onclick="showCart()"
+                  class="flex ml-auto text-white bg-indigo-500 border-0 cursor-pointer py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
+                >
+                  Go to Cart
+                </button>
+                {% else %}
+                <button
+                  type="submit"
+                  class="flex ml-auto text-white bg-indigo-500 border-0 cursor-pointer py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
+                >
+                  Add to Cart
+                </button>
+                {% endif %}
+              {% else %}
+              <button
+                type="submit"
+                class="flex ml-auto text-white bg-indigo-500 border-0 cursor-pointer py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
+              >
+                Add to Cart
+              </button>
+              {% endif %}
+            </form>
+          {% else %}
+          <form
+            class="col-span-3"
+            action="{% if request.user.is_authenticated %} {% url 'add_to_cart' %} {% else %} {% url 'add_to_cart' %}?path={{request.path}} {% endif %}"
+            method="POST"
+          >
+            {% csrf_token %}
+            <input type="text" hidden value="{{ request.path }}" name="path" />
+            <input
+              type="text"
+              hidden
+              value="{{ product.id }}"
+              name="product_id"
+            />
+            {% if request.user.is_authenticated %} 
+              {% if  product.id|is_product_in_cart:request.user %}
+              <button
+                type="button"
+                onclick="showCart()"
+                class="flex ml-auto text-white bg-indigo-500 border-0 cursor-pointer py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
+              >
+                Go to Cart
+              </button>
+              {% else %}
+              <button
+                type="submit"
+                class="flex ml-auto text-white bg-indigo-500 border-0 cursor-pointer py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
+              >
+                Add to Cart
+              </button>
+              {% endif %} 
+            {% else %}
+            <button
+              type="submit"
+              class="flex ml-auto text-white bg-indigo-500 border-0 cursor-pointer py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
+            >
+              Add to Cart
+            </button>
+            {% endif %}
+          </form>
+          {% endif %}
+        </div>
+        <details class="absolute">
+          <summary class="dark:text-zinc-200">More Details</summary>
+          <p>{{ product.detail|safe }}</p>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<h2
+  class="text-3xl font-serif text-center pt-12 pb-6 bg-white dark:bg-gray-900 dark:text-white"
+>
+  Related Products
+</h2>
+<section class="bg-white dark:bg-gray-900 text-gray-600 body-font pb-14">
+  <div class="container px-1 sm:px-5 py-5 mx-auto">
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center">
+      {% for related in relatedproduct %} 
+      {% if related.variant != 'None' %}
+        <div class="dark:bg-slate-800 shadow-lg rounded-2xl">
+        <div class="h-full overflow-hidden">
+            <a
+              class="block relative h-44 sm:h-48 rounded overflow-hidden"
+              href=""
+            >
+            <img
+              alt="ecommerce"
+              class="w-full h-auto"
+              src="{{ related.productvariant_set.all.first.productvariantmedia_set.all.first.image.url }}"
+            />
+          </a>
+          <a href="">
+            <div class="p-2 sm:mt-4 md:p-6">
+              <h3
+                class="text-gray-500 text-xs tracking-widest title-font mb-1 text-gray-400 dark:text-zinc-400"
+              >
+                {{ related.brand }}
+              </h3>
+              <h2
+                  class="text-gray-900 title-font text:sm sm:text-lg font-medium dark:text-zinc-200"
+              >
+                {{ related.productvariant_set.all.first.title }}
+              </h2>
+              <p class="mt-1 mb-2 text-sm md:text-md">
+                <span class="line-through dark:text-zinc-400">
+                  ₹ {{ related.productvariant_set.all.first.price|sale_price:related.productvariant_set.all.first.discount }}
+                </span>
+                &nbsp;&nbsp;
+                <span class="text-gray-900 dark:text-zinc-200">
+                  ₹ {{ related.productvariant_set.all.first.price }}
+                </span>
+                &nbsp;&nbsp;
+                <span class="text-red-600 dark:text-lime-400">
+                  {{ related.productvariant_set.all.first.discount }} %
+                </span>
+              </p>
+            </div>
+          </a>
+        </div>
+      </div>
+      {% else %}
+        <div class="dark:bg-slate-800 shadow-lg rounded-2xl">
+        <div class="h-full overflow-hidden">
+          <a
+            class="block relative h-44 sm:h-48 rounded overflow-hidden"
+            href="{% url 'product_detail' related.id related.slug %}"
+          >
+            <img
+              alt="ecommerce"
+              class="w-full h-auto"
+              src="{{ related.productmedia_set.all.first.image.url }}"
+            />
+          </a>
+          <a href="{% url 'product_detail' related.id related.slug %}">
+            <div class="p-2 sm:mt-4 md:p-6">
+              <h3
+                class="text-gray-500 text-xs tracking-widest title-font mb-1 text-gray-400 dark:text-zinc-400"
+              >
+                {{ related.brand }}
+              </h3>
+              <h2
+                  class="text-gray-900 title-font text:sm sm:text-lg font-medium dark:text-zinc-200"
+              >
+                {{ related.title }}
+              </h2>
+              <p class="mt-1 mb-2 text-sm md:text-md">
+                <span class="line-through dark:text-zinc-400">
+                  ₹ {{ related.price|sale_price:related.discount }}
+                </span>
+                &nbsp;&nbsp;
+                <span class="text-gray-900 dark:text-zinc-200">
+                  ₹ {{ related.price }}
+                </span>
+                &nbsp;&nbsp;
+                <span class="text-red-600 dark:text-lime-400">
+                  {{ related.discount }}%
+                </span>
+              </p>
+            </div>
+          </a>
+        </div>
+      </div>
+      {% endif %} 
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% include 'footer.html' %} 
+
+{% endblock %}

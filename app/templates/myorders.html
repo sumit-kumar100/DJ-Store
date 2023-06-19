@@ -1,0 +1,159 @@
+{% extends 'base.html' %} {% load customfilters %} {% block content %}
+<div class="border-gray-200 bg-white dark:bg-gray-900" style="min-height:500px;">
+  <div class="flex h-full flex-col overflow-y-scroll">
+    <div class="flex-1 overflow-y-auto py-6 px-4 sm:px-6">
+      <div class="mt-8">
+        <div class="flow-root">
+          <ul role="list" class="-my-6 divide-y divide-gray-200">
+            {% for myorder in myorders %} 
+              {% for item in myorder.orderitem_set.all %} 
+                {% if item.product_variant is not None %}
+                <li class="flex py-6">
+                  <div
+                    class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 dark:bg-slate-700"
+                  >
+                    <img
+                      src="{{ item.product_variant.productvariantmedia_set.all.first.image.url }}"
+                      alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt."
+                      class="h-full w-full object-cover object-center"
+                    />
+                  </div>
+
+                  <div class="ml-4 flex flex-1 flex-col">
+                    <div>
+                      <div
+                        class="flex justify-between text-xs sm:text-sm font-medium text-gray-900 dark:text-zinc-200"
+                      >
+                        <h3 class="w-28 sm:w-auto">
+                          <a href="#">{{ item.product.title }}  &nbsp; -  &nbsp; {{ item.product_variant.size.code }}</a>
+                        </h3>
+                        <div class="flex">
+                          <span class="line-through dark:text-zinc-400">
+                            $ {{ item.product_variant.price }}
+                          </span>
+                          <span class="ml-4"
+                            >$ {{ item.product_variant.price|sale_price:item.product_variant.discount }}</span
+                          >
+                        </div>
+                      </div>
+                      <span class="mt-1 text-xs text-gray-500 dark:text-zinc-400 mr-2"
+                        >{{ item.product.brand }}</span
+                      >
+                        <br class="hidden sm:block"  />
+                      <span class="mt-0 sm:mt-1 text-xs text-red-600 dark:text-lime-400"
+                        >Saved {{ item.product_variant.discount }} %</span
+                      >
+                    </div>
+                    <div class="flex flex-1 items-end justify-between text-xs ">
+                      <p class="text-gray-500 dark:text-zinc-200">
+                        Qty - {{ item.quantity }}
+                      </p>
+                      <div class="flex">
+                        <span class="text-xs text-gray-500 dark:text-white"
+                          >{{ myorder.date }}</span
+                        >
+                        <button
+                          type="button"
+                          class="ml-2 sm:ml-4 font-medium text-indigo-600 hover:text-indigo-500"
+                        >
+                          {{ myorder.order_status }}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                {% else %}
+                <li class="flex py-6">
+                  <div
+                    class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200"
+                  >
+                    <img
+                      src="{{ item.product.productmedia_set.all.first.image.url }}"
+                      alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt."
+                      class="h-full w-full object-cover object-center"
+                    />
+                  </div>
+
+                  <div class="ml-4 flex flex-1 flex-col">
+                    <div>
+                      <div
+                        class="flex justify-between text-base font-medium text-gray-900 dark:text-zinc-200"
+                      >
+                        <h3 class="w-28 sm:w-auto">
+                          <a href="#">{{ item.product.title }}</a>
+                        </h3>
+                        <div>
+                          <span class="line-through dark:text-zinc-400">
+                            $ {{ item.product.price }}
+                          </span>
+                          <span class="ml-4"
+                            >$ {{ item.product.price|sale_price:item.product.discount }}</span
+                          >
+                        </div>
+                      </div>
+                      <span class="mt-1 text-xs text-gray-500 dark:text-zinc-400 mr-2"
+                        >{{ item.product.brand }}</span
+                      >
+                        <br class="hidden sm:block"  />
+                      <span class="mt-0 sm:mt-1 text-xs text-red-600 dark:text-lime-400"
+                        >Saved {{ item.product.discount }} %</span
+                      >
+                    </div>
+                    <div class="flex flex-1 items-end justify-between text-xs ">
+                      <p class="text-gray-500 dark:text-zinc-200">
+                        Qty - {{ item.quantity }}
+                      </p>
+                      <div class="flex">
+                        <span class="text-xs text-gray-500 dark:text-white"
+                          >{{ myorder.date }}</span
+                        >
+                        <button
+                          type="button"
+                          class="ml-2 sm:ml-4 font-medium text-indigo-600 hover:text-indigo-500"
+                        >
+                          {{ myorder.order_status }}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                {% endif %} 
+              {% endfor %} 
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    {% if not myorders %}
+    <button
+      type="button"
+      class="font-medium text-indigo-600 hover:text-indigo-500"
+    >
+      <a href="/">
+        Continue Shopping
+        <span aria-hidden="true"> &rarr;</span>
+      </a>
+    </button>
+    {% endif %} 
+    {% if myorders %}
+    <div
+      class="border-t dark:border-t-0 border-gray-200 py-6 px-4 sm:px-6 flex flex-col items-center justify-center h-44"
+    >
+      <p class="mt-0.5 text-sm text-gray-500 dark:text-white">
+        Shipping and taxes include at checkout.
+      </p>
+      <div class="flex justify-between font-medium text-gray-900 mt-2">
+        <p class="mt-0.5 text-xs text-gray-500 dark:text-white" >Made by Sumit Singh</p>
+        <p></p>
+      </div>
+    </div>
+    {% endif %}
+    <div
+      class="{% if not myorders %} w-full absolute bottom-0 left-0 {% endif %}"
+    >
+      {% include 'footer.html' %}
+    </div>
+  </div>
+</div>
+{% endblock %}

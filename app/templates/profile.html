@@ -1,0 +1,226 @@
+{% extends 'base.html' %} {% load customfilters %} {% block content %}
+<div class="p-3 sm-p-6 bg-white dark:bg-gray-900">
+  <ul
+    class="nav nav-tabs flex flex-wrap list-none border-b-0 pl-0 mb-0"
+    id="tabs-tab"
+  >
+    <li class="nav-item" role="presentation">
+      <a
+        href="?tab=profile"
+        class="{% if tab != 'address' %} text-indigo-600 border border-indigo-600 {% endif %} nav-link block font-medium text-xs leading-tight uppercase border-x-0 border-t-0 border-b-2 border-transparent px-6 py-3 my-2 dark:text-zinc-200 focus:border-transparent active"
+        >Profile</a
+      >
+    </li>
+    <li class="nav-item" role="presentation">
+      <a
+        href="?tab=address"
+        class="{% if tab == 'address' %} text-indigo-600 border border-indigo-600 {% endif %} nav-link block font-medium text-xs leading-tight uppercase border-x-0 border-t-0 border-b-2 border-transparent px-6 py-3 my-2 dark:text-zinc-200 focus:border-transparent"
+        >Address</a
+      >
+    </li>
+  </ul>
+  {% if tab == 'address' %}
+  <div class="p-2 sm:p-4 grid grid-cols-1 md:grid-cols-3 gap-0 sm:gap-8">
+    <div
+      class="w-full rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700"
+    >
+      <div class="p-5 sm:p-6 space-y-4 md:space-y-6 sm:p-8">
+        <form action="" method="POST">
+          {{ address_form.non_field_errors }} 
+          {% csrf_token %} 
+          {% for field in address_form %}
+          <div>
+            <label class="leading-7 text-sm text-gray-500 dark:text-gray-100"
+              >{{ field.label }}</label
+            >
+            {% if field.field.widget.input_type == 'select' %} 
+            {{ field }} 
+            {% else %}
+            <input
+              type="{{ field.field.widget.input_type }}"
+              class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-zinc-200 dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-1 mb-4"
+              id="{{ field.name }}"
+              name="{{ field.name }}"
+              placeholder="Enter {{ field.name }}"
+              required
+            />
+            {% endif %} {{ field.errors }}
+          </div>
+          {% endfor %}
+          <button
+            type="submit"
+            class="text-white bg-indigo-600 mt-4 border-0 py-1 px-6 focus:outline-none hover:bg-indigo-700 rounded text-md"
+          >
+            Save
+          </button>
+        </form>
+      </div>
+    </div>
+    <div class="relative overflow-x-auto col-span-2 rounded mt-4 sm:mt-0">
+      <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead
+          class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+        >
+          <tr>
+            <th
+              scope="col"
+              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+            >
+              Name
+            </th>
+            <th
+              scope="col"
+              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+            >
+              Locality
+            </th>
+            <th
+              scope="col"
+              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+            >
+              State
+            </th>
+            <th
+              scope="col"
+              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+            >
+              ZipCode
+            </th>
+            <th
+              scope="col"
+              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+            >
+              Phone No
+            </th>
+            <th
+              scope="col"
+              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+            >
+              Delete Address
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for ad in address %}
+          <tr
+            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 rounded-2xl"
+          >
+            <td class="px-6 py-4">{{ ad.name }}</td>
+            <td class="px-6 py-4">{{ ad.locality }}</td>
+            <td class="px-6 py-4">{{ ad.state }}</td>
+            <td class="px-6 py-4">{{ ad.zipcode }}</td>
+            <td class="px-6 py-4">{{ ad.phone_no }}</td>
+            <td class="px-6 py-4">
+              <a
+                href="?tab=address&delete-address={{ ad.id }}"
+                class="font-medium text-indigo-600 hover:text-indigo-500"
+                >Remove</a
+              >
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% else %}
+  <div class="p-2 sm:p-6 grid md:grid-cols-4">
+    <div class="md:col-span-1 hidden md:block cursor-pointer">
+      <img
+        src="https://mdbcdn.b-cdn.net/img/new/avatars/8.webp"
+        class="rounded-full w-full mb-4 mx-auto mt-14"
+        alt="Avatar"
+      />
+    </div>
+
+    <div class="lg:ml-14 md:col-span-3">
+      {% if messages %} 
+        {% for message in messages %} 
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                <div class="relative -top-8 flex justify-center">
+                    <div
+                    class="px-14 py-4 text-purple-800 bg-purple-300 rounded-lg shadow-lg shadow-purple-500/50"
+                    role="alert"
+                    >
+                      {{ message }}
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %} 
+    {% endif %}
+      <section class="text-gray-600 body-font relative">
+        <div>
+          <div
+            class="bg-white dark:bg-slate-800 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0 relative z-10 shadow-md"
+          >
+            <h2
+              class="text-gray-900 text-lg mb-1 font-medium title-font dark:text-white"
+            >
+              Profile
+            </h2>
+            <form action="{% url 'profile_update' %}" method="post">
+              {% csrf_token %}
+              <div class="relative mb-4">
+                <label
+                  for="First Name"
+                  class="leading-7 text-sm text-gray-500 dark:text-gray-100"
+                  >First Name</label
+                >
+                <input
+                  type="text"
+                  id="first_name"
+                  name="first_name"
+                  placeholder="first name"
+                  value="{{ request.user.first_name }}"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-zinc-200 dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-1 mb-4"
+                />
+              </div>
+
+              <div class="relative mb-4">
+                <label
+                  for="Last Name"
+                  class="leading-7 text-sm text-gray-500 dark:text-gray-100"
+                  >Last Name</label
+                >
+                <input
+                  type="text"
+                  id="last_name"
+                  name="last_name"
+                  placeholder="last name"
+                  value="{{ request.user.last_name }}"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-zinc-200 dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-1 mb-4"
+                />
+              </div>
+
+              <div class="relative mb-4">
+                <label
+                  for="email"
+                  class="leading-7 text-sm text-gray-500 dark:text-gray-100"
+                  >Email</label
+                >
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="email"
+                  value="{{ request.user.username }}"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-zinc-200 dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-1 mb-4"
+                />
+              </div>
+              <button
+                type="submit"
+                class="text-white text-sm bg-indigo-600 mt-4 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-700 rounded text-md"
+              >
+                Update Profile
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% include 'footer.html' %} 
+
+{% endblock %}
