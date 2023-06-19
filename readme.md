@@ -52,7 +52,7 @@ To install and run the project locally, follow these steps:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/your-repo.git
+   git clone https://github.com/sumit-singh1196/DJ-Store.git
 
 2. Change into the project directory:
 
