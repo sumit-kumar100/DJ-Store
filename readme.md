@@ -1,6 +1,21 @@
-# Django Ecommerce Website
+# Django Ecommerce Website - https://sumit1196.pythonanywhere.com
 
 This repository contains a fully-featured ecommerce website built with Django, Python, HTML, CSS, and Tailwind CSS. The website includes various functionalities commonly found in an ecommerce platform, such as:
+
+## Table of Contents
+
+- [Demo](#demo)
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Setup](#setup)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Demo
+
+You can see a live demo of the application [here](https://sumit1196.pythonanywhere.com).
+
 
 ## Features
 
