@@ -99,7 +99,7 @@ To install and run the project locally, follow these steps:
 7. Open your browser and visit http://localhost:8000 to view the website.
 
 
-Configuration
+## Configuration
 
 - To configure the Instamojo payment gateway integration, update the following settings in the settings.py file:
     API_KEY = 'your-instamojo-api-key'
@@ -108,7 +108,7 @@ Configuration
 - Replace 'your-instamojo-api-key' and 'your-instamojo-auth-token' with your actual Instamojo API credentials.
 
 
-Contributing
+## Contributing
 - Contributions are welcome! If you'd like to contribute to this project, please follow these steps:
 
 Fork the repository.
@@ -118,5 +118,5 @@ Fork the repository.
 - Submit a pull request.
 - Please ensure your pull request follows the project's coding guidelines and includes relevant tests if applicable.
 
-License
+## License
 - This project is licensed under the MIT License.
