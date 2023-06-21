@@ -57,7 +57,7 @@ To install and run the project locally, follow these steps:
 2. Change into the project directory:
 
    ```bash
-   cd your-repo
+   cd DJ-Store
 
 3. Create and activate a virtual environment:
 
