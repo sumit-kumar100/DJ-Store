@@ -13,5 +13,5 @@ urlpatterns = [
 # Adding Media Root to browser.
 urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
 
-# Adding Static Root to browser.
-urlpatterns += static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
+# Adding Static Root to browser. UNCOMMENT IN PRODUCTION
+# urlpatterns += static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
