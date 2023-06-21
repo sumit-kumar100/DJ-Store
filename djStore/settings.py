@@ -7,7 +7,7 @@ SECRET_KEY = 'django-insecure-fi4+ivu^xo3$yc%+vaxjg@ehn#-=evae-$fix)k2*9_pv-b&j^
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1','.vercel.app','now.sh']
+ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     'tailwind',
@@ -95,9 +95,7 @@ TAILWIND_APP_NAME = 'app'
 INTERNAL_IPS = ["127.0.0.1"]
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles_build','static')
-STATIC_DIR = BASE_DIR / 'static'
-STATICFILES_DIRS = [STATIC_DIR]
+STATIC_ROOT = os.path.join(BASE_DIR,'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
