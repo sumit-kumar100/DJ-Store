@@ -107,7 +107,6 @@ To install and run the project locally, follow these steps:
 
 - Replace 'your-instamojo-api-key' and 'your-instamojo-auth-token' with your actual Instamojo API credentials.
 
-
 ## Contributing
 - Contributions are welcome! If you'd like to contribute to this project, please follow these steps:
 
